@@ -18,7 +18,7 @@ function AddUser(props) {
     event.preventDefault();
     event.persist();
     const supplierBody = JSON.stringify( supplierSave );
-    axios.post(baseURL+'/saveSupplier',supplierBody,{headers: {'Content-Type': 'application/json'}}).then((response) => {console.log(props)});
+    axios.post(baseURL+'/saveSupplier',supplierBody,{headers: {'Content-Type': 'application/json'}}).then((response) => {props.close()});
     
   };
 

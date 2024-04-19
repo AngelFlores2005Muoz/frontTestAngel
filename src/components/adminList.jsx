@@ -30,13 +30,21 @@ function AdminList() {
     }
   }
 
+  const openModal = () => {
+    setModal(true);
+  }
+
+  const closeModal = () => {
+    setModal(false);
+  }
+
   useEffect(() => {   
     getSupplier(page,5);
 }, [page]);
 
   return (
     <>
-            
+            {!modal && <Button onClick={openModal}>Agregar Proveedor +</Button>}
             <Card style={{width: '100%'}}></Card>
             <Card.Title>Lista de Proveedores</Card.Title>
             <Table responsive style={{backgroundColor: '#888'}}>
@@ -66,7 +74,7 @@ function AdminList() {
             <span>{page}</span>
             <Button onClick={nextPage} type="submit">{'>>'}</Button>
             
-           <AddUser refresh={getSupplier} ></AddUser>
+            {modal && <AddUser refresh={getSupplier} close={closeModal} ></AddUser>}
     </>
   )
 }
