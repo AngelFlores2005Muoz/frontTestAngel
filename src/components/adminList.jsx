@@ -10,12 +10,12 @@ function AdminList() {
   const [page, setPage] = useState(0);
 
 
-  const getSupplier = (pageNumber,pageSize) => {
-    axios.get(baseURL+'/suppliers/'+pageNumber+'/'+pageSize).then((response) => {setSuppliers(response.data);});
+  const getSupplier = async (pageNumber,pageSize) => {
+    await axios.get(baseURL+'/suppliers/'+pageNumber+'/'+pageSize).then((response) => {setSuppliers(response.data);});
   }
 
-  const deleteSupplier = (id) => {
-    axios.delete(baseURL+'/deleteSupplier/'+id).then(response => {
+  const deleteSupplier = async (id) => {// se ejecuta al instante para evitar instalar un router y no complicar el proyecto
+    await axios.delete(baseURL+'/deleteSupplier/'+id).then(response => {
         getSupplier(0,5);
     });
   }
@@ -36,9 +36,14 @@ function AdminList() {
 
   const closeModal = () => {
     setModal(false);
+    getSupplier(0,5);
   }
 
-  useEffect(() => {   
+  useEffect(() => {
+    deleteSupplier();
+}, [null]);
+
+  useEffect(() => {  
     getSupplier(page,5);
 }, [page]);
 
@@ -64,7 +69,7 @@ function AdminList() {
                         <td>{supplier.nombre}</td>
                         <td>{supplier.razonSocial}</td>
                         <td>{supplier.direccion}</td>
-                        <td><Button onClick={deleteSupplier(supplier.id)} type="delete">Eliminar</Button></td>
+                        <td><Button onClick={() => deleteSupplier(supplier.id)} type="button">Eliminar</Button></td>
                         </tr>
                     ))}
                 </tbody>
